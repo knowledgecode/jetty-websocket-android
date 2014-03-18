@@ -11,6 +11,9 @@ Jetty WebSocket for Android is an android-optimized jetty websocket client. This
  - Android SDK  
 
 ## Change Log
+#### 0.1.1
+* merged from the latest repository of jetty-8
+
 #### 0.1.0
 * forked from jetty-8.1.14.v20131031 and extracted minimum required files
 

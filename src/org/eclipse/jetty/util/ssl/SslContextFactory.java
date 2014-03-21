@@ -427,31 +427,11 @@ public class SslContextFactory extends AbstractLifeCycle
     }
 
     /* ------------------------------------------------------------ */
-    @Deprecated
-    public String getKeyStore()
-    {
-        return _keyStorePath;
-    }
-
-    /* ------------------------------------------------------------ */
     /**
      * @param keyStorePath
      *            The file or URL of the SSL Key store.
      */
     public void setKeyStorePath(String keyStorePath)
-    {
-        checkNotStarted();
-
-        _keyStorePath = keyStorePath;
-    }
-
-    /* ------------------------------------------------------------ */
-    /**
-     * @param keyStorePath the file system path or URL of the keystore
-     * @deprecated Use {@link #setKeyStorePath(String)}
-     */
-    @Deprecated
-    public void setKeyStore(String keyStorePath)
     {
         checkNotStarted();
 
@@ -498,34 +478,6 @@ public class SslContextFactory extends AbstractLifeCycle
         checkNotStarted();
 
         _keyStoreType = keyStoreType;
-    }
-
-    /* ------------------------------------------------------------ */
-    /** Get the _keyStoreInputStream.
-     * @return the _keyStoreInputStream
-     *
-     * @deprecated
-     */
-    @Deprecated
-    public InputStream getKeyStoreInputStream()
-    {
-        checkKeyStore();
-
-        return _keyStoreInputStream;
-    }
-
-    /* ------------------------------------------------------------ */
-    /** Set the keyStoreInputStream.
-     * @param keyStoreInputStream the InputStream to the KeyStore
-     *
-     * @deprecated Use {@link #setKeyStore(KeyStore)}
-     */
-    @Deprecated
-    public void setKeyStoreInputStream(InputStream keyStoreInputStream)
-    {
-        checkNotStarted();
-
-        _keyStoreInputStream = keyStoreInputStream;
     }
 
     /* ------------------------------------------------------------ */
@@ -613,34 +565,6 @@ public class SslContextFactory extends AbstractLifeCycle
     }
 
     /* ------------------------------------------------------------ */
-    /** Get the _trustStoreInputStream.
-     * @return the _trustStoreInputStream
-     *
-     * @deprecated
-     */
-    @Deprecated
-    public InputStream getTrustStoreInputStream()
-    {
-        checkKeyStore();
-
-        return _trustStoreInputStream;
-    }
-
-    /* ------------------------------------------------------------ */
-    /** Set the _trustStoreInputStream.
-     * @param trustStoreInputStream the InputStream to the TrustStore
-     *
-     * @deprecated
-     */
-    @Deprecated
-    public void setTrustStoreInputStream(InputStream trustStoreInputStream)
-    {
-        checkNotStarted();
-
-        _trustStoreInputStream = trustStoreInputStream;
-    }
-
-    /* ------------------------------------------------------------ */
     /**
      * @return True if SSL needs client authentication.
      * @see SSLEngine#getNeedClientAuth()
@@ -684,17 +608,6 @@ public class SslContextFactory extends AbstractLifeCycle
         checkNotStarted();
 
         _wantClientAuth = wantClientAuth;
-    }
-
-    /* ------------------------------------------------------------ */
-    /**
-     * @return true if SSL certificate has to be validated
-     * @deprecated
-     */
-    @Deprecated
-    public boolean getValidateCerts()
-    {
-        return _validateCerts;
     }
 
     /* ------------------------------------------------------------ */

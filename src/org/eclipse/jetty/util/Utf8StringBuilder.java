@@ -36,12 +36,6 @@ public class Utf8StringBuilder extends Utf8Appendable
 {
     final StringBuilder _buffer;
 
-    public Utf8StringBuilder()
-    {
-        super(new StringBuilder());
-        _buffer=(StringBuilder)_appendable;
-    }
-
     public Utf8StringBuilder(int capacity)
     {
         super(new StringBuilder(capacity));
@@ -61,18 +55,10 @@ public class Utf8StringBuilder extends Utf8Appendable
         _buffer.setLength(0);
     }
 
-    public StringBuilder getStringBuilder()
-    {
-        checkState();
-        return _buffer;
-    }
-
     @Override
     public String toString()
     {
         checkState();
         return _buffer.toString();
     }
-
-
 }

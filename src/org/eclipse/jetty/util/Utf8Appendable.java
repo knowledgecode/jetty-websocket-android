@@ -96,32 +96,6 @@ public abstract class Utf8Appendable
         _state = UTF8_ACCEPT;
     }
 
-    public void append(byte b)
-    {
-        try
-        {
-            appendByte(b);
-        }
-        catch (IOException e)
-        {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void append(byte[] b, int offset, int length)
-    {
-        try
-        {
-            int end = offset + length;
-            for (int i = offset; i < end; i++)
-                appendByte(b[i]);
-        }
-        catch (IOException e)
-        {
-            throw new RuntimeException(e);
-        }
-    }
-
     public boolean append(byte[] b, int offset, int length, int maxChars)
     {
         try
@@ -169,17 +143,16 @@ public abstract class Utf8Appendable
                             _appendable.append(c);
                     }
                     break;
-                    
+
                 case UTF8_REJECT:
                     String reason = "byte "+TypeUtil.toHexString(b)+" in state "+(_state/12);
                     _codep=0;
                     _state = UTF8_ACCEPT;
                     _appendable.append(REPLACEMENT);
                     throw new NotUtf8Exception(reason);
-                    
+
                 default:
                     _state=next;
-                    
             }
         }
     }
@@ -191,6 +164,8 @@ public abstract class Utf8Appendable
 
     public static class NotUtf8Exception extends IllegalArgumentException
     {
+        private static final long serialVersionUID = 3252685459734178140L;
+
         public NotUtf8Exception(String reason)
         {
             super("Not valid UTF8! "+reason);
@@ -213,26 +188,5 @@ public abstract class Utf8Appendable
             }
             throw new NotUtf8Exception("incomplete UTF8 sequence");
         }
-    }
-    
-    public String toReplacedString()
-    {
-        if (!isUtf8SequenceComplete())
-        {
-            _codep=0;
-            _state = UTF8_ACCEPT;
-            try
-            {
-                _appendable.append(REPLACEMENT);
-            }
-            catch(IOException e)
-            {
-                throw new RuntimeException(e);
-            }
-            Throwable th= new NotUtf8Exception("incomplete UTF8 sequence");
-            LOG.warn(th.toString());
-            LOG.debug(th);
-        }
-        return _appendable.toString();
     }
 }

@@ -18,7 +18,6 @@
 
 package org.eclipse.jetty.util;
 
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 
 import org.eclipse.jetty.util.log.Log;
@@ -38,21 +37,14 @@ public class StringUtil
     private static final Logger LOG = Log.getLogger(StringUtil.class);
 
     public static final String ALL_INTERFACES="0.0.0.0";
-    public static final String CRLF="\015\012";
-    public static final String __LINE_SEPARATOR=
-        System.getProperty("line.separator","\n");
 
     public static final String __ISO_8859_1="ISO-8859-1";
     public final static String __UTF8="UTF-8";
-    public final static String __UTF8Alt="UTF8";
-    public final static String __UTF16="UTF-16";
 
-    public final static Charset __UTF8_CHARSET;
     public final static Charset __ISO_8859_1_CHARSET;
 
     static
     {
-        __UTF8_CHARSET=Charset.forName(__UTF8);
         __ISO_8859_1_CHARSET=Charset.forName(__ISO_8859_1);
     }
 
@@ -83,43 +75,12 @@ public class StringUtil
     }
 
     /* ------------------------------------------------------------ */
-    /**
-     * append hex digit
-     * 
-     */
-    public static void append(StringBuilder buf,byte b,int base)
-    {
-        int bi=0xff&b;
-        int c='0'+(bi/base)%base;
-        if (c>'9')
-            c= 'a'+(c-'0'-10);
-        buf.append((char)c);
-        c='0'+bi%base;
-        if (c>'9')
-            c= 'a'+(c-'0'-10);
-        buf.append((char)c);
-    }
-
-    /* ------------------------------------------------------------ */
     public static void append2digits(StringBuilder buf,int i)
     {
         if (i<100)
         {
             buf.append((char)(i/10+'0'));
             buf.append((char)(i%10+'0'));
-        }
-    }
-
-    /* ------------------------------------------------------------ */
-    public static String toString(byte[] b,int offset,int length,String charset)
-    {
-        try
-        {
-            return new String(b,offset,length,charset);
-        }
-        catch (UnsupportedEncodingException e)
-        {
-            throw new IllegalArgumentException(e);
         }
     }
 

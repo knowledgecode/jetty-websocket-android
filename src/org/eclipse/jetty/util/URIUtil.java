@@ -20,7 +20,6 @@ package org.eclipse.jetty.util;
 
 import java.io.UnsupportedEncodingException;
 
-
 /* ------------------------------------------------------------ */
 /** URI Holder.
  * This class assists with the decoding and encoding or HTTP URI's.
@@ -36,10 +35,6 @@ public class URIUtil
     implements Cloneable
 {
     public static final String SLASH="/";
-    public static final String HTTP="http";
-    public static final String HTTP_COLON="http:";
-    public static final String HTTPS="https";
-    public static final String HTTPS_COLON="https:";
 
     // Use UTF-8 as per http://www.w3.org/TR/html40/appendix/notes.html#non-ascii-chars
     public static final String __CHARSET=System.getProperty("org.eclipse.jetty.util.URI.charset",StringUtil.__UTF8);
@@ -264,7 +259,7 @@ public class URIUtil
                     s=new String(bytes,0,b,__CHARSET);
                 }
                 catch (UnsupportedEncodingException e)
-                {       
+                {
                     s=new String(bytes,0,b);
                 }
                 s.getChars(0,s.length(),chars,n);
@@ -288,7 +283,7 @@ public class URIUtil
                 s=new String(bytes,0,b,__CHARSET);
             }
             catch (UnsupportedEncodingException e)
-            {       
+            {
                 s=new String(bytes,0,b);
             }
             s.getChars(0,s.length(),chars,n);

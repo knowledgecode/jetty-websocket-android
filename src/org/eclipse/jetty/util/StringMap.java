@@ -59,8 +59,8 @@ public class StringMap extends AbstractMap
     {}
 
     /* ------------------------------------------------------------ */
-    /** Constructor. 
-     * @param ignoreCase 
+    /** Constructor.
+     * @param ignoreCase
      */
     public StringMap(boolean ignoreCase)
     {

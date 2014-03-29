@@ -20,9 +20,6 @@ package org.eclipse.jetty.util;
 
 import java.io.IOException;
 
-import org.eclipse.jetty.util.log.Log;
-import org.eclipse.jetty.util.log.Logger;
-
 /* ------------------------------------------------------------ */
 /**
  * Utf8 Appendable abstract base class
@@ -49,7 +46,6 @@ import org.eclipse.jetty.util.log.Logger;
  **/
 public abstract class Utf8Appendable
 {
-    protected static final Logger LOG = Log.getLogger(Utf8Appendable.class);
     public static final char REPLACEMENT = '\ufffd';
     private static final int UTF8_ACCEPT = 0;
     private static final int UTF8_REJECT = 12;

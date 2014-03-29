@@ -51,13 +51,13 @@ public class AggregateLifeCycle extends AbstractLifeCycle implements Destroyable
 
     private class Bean
     {
-        Bean(Object b) 
+        Bean(Object b)
         {
             _bean=b;
         }
         final Object _bean;
         volatile boolean _managed=true;
-        
+
         public String toString()
         {
             return "{"+_bean+","+_managed+"}";
@@ -85,7 +85,7 @@ public class AggregateLifeCycle extends AbstractLifeCycle implements Destroyable
         _started=true;
         super.doStart();
     }
-    
+
     /* ------------------------------------------------------------ */
     /**
      * Stop the joined lifecycle beans in the reverse order they were added.
@@ -109,7 +109,6 @@ public class AggregateLifeCycle extends AbstractLifeCycle implements Destroyable
         }
     }
 
-
     /* ------------------------------------------------------------ */
     /**
      * Destroy the joined Destroyable beans in the reverse order they were added.
@@ -130,7 +129,6 @@ public class AggregateLifeCycle extends AbstractLifeCycle implements Destroyable
         _beans.clear();
     }
 
-
     /* ------------------------------------------------------------ */
     /** Is the bean contained in the aggregate.
      * @param bean
@@ -143,20 +141,7 @@ public class AggregateLifeCycle extends AbstractLifeCycle implements Destroyable
                 return true;
         return false;
     }
-    
-    /* ------------------------------------------------------------ */
-    /** Is the bean joined to the aggregate.
-     * @param bean
-     * @return True if the aggregate contains the bean and it is joined
-     */
-    public boolean isManaged(Object bean)
-    {
-        for (Bean b:_beans)
-            if (b._bean==bean)
-                return b._managed;
-        return false;
-    }
-    
+
     /* ------------------------------------------------------------ */
     /**
      * Add an associated bean.
@@ -172,7 +157,7 @@ public class AggregateLifeCycle extends AbstractLifeCycle implements Destroyable
         // beans are joined unless they are started lifecycles
         return addBean(o,!((o instanceof LifeCycle)&&((LifeCycle)o).isStarted()));
     }
-    
+
     /* ------------------------------------------------------------ */
     /** Add an associated lifecycle.
      * @param o The lifecycle to add
@@ -183,11 +168,11 @@ public class AggregateLifeCycle extends AbstractLifeCycle implements Destroyable
     {
         if (contains(o))
             return false;
-        
+
         Bean b = new Bean(o);
         b._managed=managed;
         _beans.add(b);
-        
+
         if (o instanceof LifeCycle)
         {
             LifeCycle l=(LifeCycle)o;
@@ -206,98 +191,6 @@ public class AggregateLifeCycle extends AbstractLifeCycle implements Destroyable
             }
         }
         return true;
-    }
-    
-    /* ------------------------------------------------------------ */
-    /**
-     * Manage a bean by this aggregate, so that it is started/stopped/destroyed with the 
-     * aggregate lifecycle.  
-     * @param bean The bean to manage (must already have been added).
-     */
-    public void manage(Object bean)
-    {    
-        for (Bean b :_beans)
-        {
-            if (b._bean==bean)
-            {
-                b._managed=true;
-                return;
-            }
-        }
-        throw new IllegalArgumentException();
-    }
-
-    /* ------------------------------------------------------------ */
-    /**
-     * Unmanage a bean by this aggregate, so that it is not started/stopped/destroyed with the 
-     * aggregate lifecycle.  
-     * @param bean The bean to manage (must already have been added).
-     */
-    public void unmanage(Object bean)
-    {
-        for (Bean b :_beans)
-        {
-            if (b._bean==bean)
-            {
-                b._managed=false;
-                return;
-            }
-        }
-        throw new IllegalArgumentException();
-    }
-    
-    /* ------------------------------------------------------------ */
-    /** Get dependent beans 
-     * @return List of beans.
-     */
-    public Collection<Object> getBeans()
-    {
-        return getBeans(Object.class);
-    }
-    
-    /* ------------------------------------------------------------ */
-    /** Get dependent beans of a specific class
-     * @see #addBean(Object)
-     * @param clazz
-     * @return List of beans.
-     */
-    public <T> List<T> getBeans(Class<T> clazz)
-    {
-        ArrayList<T> beans = new ArrayList<T>();
-        for (Bean b:_beans)
-        {
-            if (clazz.isInstance(b._bean))
-                beans.add((T)(b._bean));
-        }
-        return beans;
-    }
-
-    
-    /* ------------------------------------------------------------ */
-    /** Get dependent beans of a specific class.
-     * If more than one bean of the type exist, the first is returned.
-     * @see #addBean(Object)
-     * @param clazz
-     * @return bean or null
-     */
-    public <T> T getBean(Class<T> clazz)
-    {
-        for (Bean b:_beans)
-        {
-            if (clazz.isInstance(b._bean))
-                return (T)b._bean;
-        }
-        
-        return null;
-    }
-    
-    /* ------------------------------------------------------------ */
-    /**
-     * Remove all associated bean.
-     */
-    public void removeBeans ()
-    {
-        _beans.clear();
     }
 
     /* ------------------------------------------------------------ */
@@ -320,25 +213,6 @@ public class AggregateLifeCycle extends AbstractLifeCycle implements Destroyable
     }
 
     /* ------------------------------------------------------------ */
-    public void dumpStdErr()
-    {
-        try
-        {
-            dump(System.err,"");
-        }
-        catch (IOException e)
-        {
-            LOG.warn(e);
-        }
-    }
-    
-    /* ------------------------------------------------------------ */
-    public String dump()
-    {
-        return dump(this);
-    }    
-    
-    /* ------------------------------------------------------------ */
     public static String dump(Dumpable dumpable)
     {
         StringBuilder b = new StringBuilder();
@@ -351,12 +225,6 @@ public class AggregateLifeCycle extends AbstractLifeCycle implements Destroyable
             LOG.warn(e);
         }
         return b.toString();
-    }    
-
-    /* ------------------------------------------------------------ */
-    public void dump(Appendable out) throws IOException
-    {
-        dump(out,"");
     }
 
     /* ------------------------------------------------------------ */
@@ -380,7 +248,7 @@ public class AggregateLifeCycle extends AbstractLifeCycle implements Destroyable
             out.append(" => ").append(th.toString()).append('\n');
         }
     }
-    
+
     /* ------------------------------------------------------------ */
     public void dump(Appendable out,String indent) throws IOException
     {
@@ -398,17 +266,17 @@ public class AggregateLifeCycle extends AbstractLifeCycle implements Destroyable
             {
                 if (b._bean instanceof Dumpable)
                     ((Dumpable)b._bean).dump(out,indent+(i==size?"    ":" |  "));
-                else 
+                else
                     dumpObject(out,b._bean);
             }
-            else 
+            else
                 dumpObject(out,b._bean);
         }
 
         if (i!=size)
             out.append(indent).append(" |\n");
     }
-    
+
     /* ------------------------------------------------------------ */
     public static void dump(Appendable out,String indent,Collection<?>... collections) throws IOException
     {
@@ -416,7 +284,7 @@ public class AggregateLifeCycle extends AbstractLifeCycle implements Destroyable
             return;
         int size=0;
         for (Collection<?> c : collections)
-            size+=c.size();    
+            size+=c.size();
         if (size==0)
             return;
 
@@ -433,9 +301,9 @@ public class AggregateLifeCycle extends AbstractLifeCycle implements Destroyable
                 else 
                     dumpObject(out,o);
             }
-            
+
             if (i!=size)
-                out.append(indent).append(" |\n");          
+                out.append(indent).append(" |\n");
         }
     }
 }

@@ -92,19 +92,6 @@ public interface LifeCycle
     public boolean isStopped();
 
     /* ------------------------------------------------------------ */
-    /**
-     * @return true if the component has failed to start or has failed to stop.
-     */
-    public boolean isFailed();
-    
-    /* ------------------------------------------------------------ */
-    public void addLifeCycleListener(LifeCycle.Listener listener);
-
-    /* ------------------------------------------------------------ */
-    public void removeLifeCycleListener(LifeCycle.Listener listener);
-    
-
-    /* ------------------------------------------------------------ */
     /** Listener.
      * A listener for Lifecycle events.
      */

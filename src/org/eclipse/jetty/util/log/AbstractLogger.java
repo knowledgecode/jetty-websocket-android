@@ -18,7 +18,6 @@
 
 package org.eclipse.jetty.util.log;
 
-
 /* ------------------------------------------------------------ */
 /** Abstract Logger.
  * Manages the atomic registration of the logger by name.
@@ -32,12 +31,12 @@ public abstract class AbstractLogger implements Logger
 
         final String basename = getName();
         final String fullname = (isBlank(basename) || Log.getRootLogger()==this)?name:(basename + "." + name);
-        
+
         Logger logger = Log.getLoggers().get(fullname);
         if (logger == null)
         {
             Logger newlog = newLogger(fullname);
-            
+
             logger = Log.getMutableLoggers().putIfAbsent(fullname,newlog);
             if (logger == null)
                 logger=newlog;
@@ -45,7 +44,6 @@ public abstract class AbstractLogger implements Logger
 
         return logger;
     }
-    
 
     protected abstract Logger newLogger(String fullname);
 

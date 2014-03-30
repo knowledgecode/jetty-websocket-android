@@ -50,7 +50,7 @@ public class StdErrLog extends AbstractLogger
     static
     {
         __props.putAll(Log.__props);
-        
+
         String deprecatedProperties[] =
         { "DEBUG", "org.eclipse.jetty.util.log.DEBUG", "org.eclipse.jetty.util.log.stderr.DEBUG" };
 
@@ -231,30 +231,9 @@ public class StdErrLog extends AbstractLogger
         this._printLongNames = printLongNames;
     }
 
-    public boolean isPrintLongNames()
-    {
-        return this._printLongNames;
-    }
-
     public boolean isHideStacks()
     {
         return _hideStacks;
-    }
-
-    public void setHideStacks(boolean hideStacks)
-    {
-        _hideStacks = hideStacks;
-    }
-
-    /* ------------------------------------------------------------ */
-    /**
-     * Is the source of a log, logged
-     *
-     * @return true if the class, method, file and line number of a log is logged.
-     */
-    public boolean isSource()
-    {
-        return _source;
     }
 
     /* ------------------------------------------------------------ */
@@ -335,7 +314,7 @@ public class StdErrLog extends AbstractLogger
             this._level = LEVEL_DEBUG;
 
             for (Logger log : Log.getLoggers().values())
-            {                
+            {
                 if (log.getName().startsWith(getName()) && log instanceof StdErrLog)
                     ((StdErrLog)log).setLevel(LEVEL_DEBUG);
             }
@@ -343,18 +322,13 @@ public class StdErrLog extends AbstractLogger
         else
         {
             this._level = this._configuredLevel;
-            
+
             for (Logger log : Log.getLoggers().values())
             {
                 if (log.getName().startsWith(getName()) && log instanceof StdErrLog)
                     ((StdErrLog)log).setLevel(((StdErrLog)log)._configuredLevel);
             }
         }
-    }
-
-    public int getLevel()
-    {
-        return _level;
     }
 
     /**
@@ -369,11 +343,6 @@ public class StdErrLog extends AbstractLogger
     public void setLevel(int level)
     {
         this._level = level;
-    }
-
-    public void setStdErrStream(PrintStream stream)
-    {
-        this._stderr = stream==System.err?null:stream;
     }
 
     public void debug(String msg, Object... args)
@@ -576,7 +545,7 @@ public class StdErrLog extends AbstractLogger
         // Let Level come from configured Properties instead - sel.setLevel(_level);
         logger.setSource(_source);
         logger._stderr = this._stderr;
-        
+
         // Force the child to have any programmatic configuration
         if (_level!=_configuredLevel)
             logger._level=_level;
@@ -610,12 +579,6 @@ public class StdErrLog extends AbstractLogger
                 break;
         }
         return s.toString();
-    }
-
-    public static void setProperties(Properties props)
-    {
-        __props.clear();
-        __props.putAll(props);
     }
 
     public void ignore(Throwable ignored)

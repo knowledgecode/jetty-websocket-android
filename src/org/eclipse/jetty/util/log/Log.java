@@ -20,7 +20,6 @@ package org.eclipse.jetty.util.log;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Method;
 import java.net.URL;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
@@ -205,44 +204,6 @@ public class Log
     }
 
     /**
-     * Set Log to parent Logger.
-     * <p>
-     * If there is a different Log class available from a parent classloader,
-     * call {@link #getLogger(String)} on it and construct a {@link LoggerLog} instance
-     * as this Log's Logger, so that logging is delegated to the parent Log.
-     * <p>
-     * This should be used if a webapp is using Log, but wishes the logging to be
-     * directed to the containers log.
-     * <p>
-     * If there is not parent Log, then this call is equivalent to<pre>
-     *   Log.setLog(Log.getLogger(name));
-     * </pre>
-     * @param name Logger name
-     */
-    public static void setLogToParent(String name)
-    {
-        ClassLoader loader = Log.class.getClassLoader();
-        if (loader!=null && loader.getParent()!=null)
-        {
-            try
-            {
-                Class<?> uberlog = loader.getParent().loadClass("org.eclipse.jetty.util.log.Log");
-                Method getLogger = uberlog.getMethod("getLogger", new Class[]{String.class});
-                Object logger = getLogger.invoke(null,name);
-                setLog(new LoggerLog(logger));
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-        }
-        else
-        {
-            setLog(getLogger(name));
-        }
-    }
-
-    /**
      * Obtain a named Logger based on the fully qualified class name.
      *
      * @param clazz
@@ -278,7 +239,7 @@ public class Log
     {
         return __loggers;
     }
-    
+
     /**
      * Get a map of all configured {@link Logger} instances.
      *

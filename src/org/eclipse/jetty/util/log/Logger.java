@@ -104,7 +104,7 @@ public interface Logger
      * @return a logger with the given name
      */
     public Logger getLogger(String name);
-    
+
     /**
      * Ignore an exception.
      * <p>This should be used rather than an empty catch block.

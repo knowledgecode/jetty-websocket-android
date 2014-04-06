@@ -29,8 +29,6 @@ public class PooledBuffers extends AbstractBuffers
     private final Queue<Buffer> _others;
     private final AtomicInteger _size = new AtomicInteger();
     private final int _maxSize;
-    private final boolean _otherHeaders;
-    private final boolean _otherBuffers;
 
     /* ------------------------------------------------------------ */
     public PooledBuffers(Buffers.Type headerType, int headerSize, Buffers.Type bufferType, int bufferSize, Buffers.Type otherType,int maxSize)
@@ -39,8 +37,6 @@ public class PooledBuffers extends AbstractBuffers
         _headers=new ConcurrentLinkedQueue<Buffer>();
         _buffers=new ConcurrentLinkedQueue<Buffer>();
         _others=new ConcurrentLinkedQueue<Buffer>();
-        _otherHeaders=headerType==otherType;
-        _otherBuffers=bufferType==otherType;
         _maxSize=maxSize;
     }
 
@@ -61,31 +57,6 @@ public class PooledBuffers extends AbstractBuffers
         Buffer buffer = _buffers.poll();
         if (buffer==null)
             buffer=newBuffer();
-        else
-            _size.decrementAndGet();
-        return buffer;
-    }
-
-    /* ------------------------------------------------------------ */
-    public Buffer getBuffer(int size)
-    {
-        if (_otherHeaders && size==getHeaderSize())
-            return getHeader();
-        if (_otherBuffers && size==getBufferSize())
-            return getBuffer();
-
-        // Look for an other buffer
-        Buffer buffer = _others.poll();
-
-        // consume all other buffers until one of the right size is found
-        while (buffer!=null && buffer.capacity()!=size)
-        {
-            _size.decrementAndGet();
-            buffer = _others.poll();
-        }
-
-        if (buffer==null)
-            buffer=newBuffer(size);
         else
             _size.decrementAndGet();
         return buffer;

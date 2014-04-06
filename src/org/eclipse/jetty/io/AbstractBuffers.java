@@ -57,7 +57,6 @@ public abstract class AbstractBuffers implements Buffers
         return _headerSize;
     }
 
-
     /* ------------------------------------------------------------ */
     /**
      * Create a new header Buffer

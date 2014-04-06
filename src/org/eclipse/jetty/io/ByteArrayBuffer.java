@@ -40,16 +40,6 @@ public class ByteArrayBuffer extends AbstractBuffer
     {
         this(new byte[size],0,0,access, isVolatile);
     }
-    
-    public ByteArrayBuffer(byte[] bytes)
-    {
-        this(bytes, 0, bytes.length, READWRITE);
-    }
-
-    public ByteArrayBuffer(byte[] bytes, int index, int length)
-    {
-        this(bytes, index, length, READWRITE);
-    }
 
     public ByteArrayBuffer(byte[] bytes, int index, int length, int access)
     {
@@ -84,7 +74,7 @@ public class ByteArrayBuffer extends AbstractBuffer
         _access=IMMUTABLE;
         _string = value;
     }
-    
+
     public ByteArrayBuffer(String value,boolean immutable)
     {
         super(READWRITE,NON_VOLATILE);
@@ -117,7 +107,7 @@ public class ByteArrayBuffer extends AbstractBuffer
     {
         return _bytes.length;
     }
-    
+
     @Override
     public void compact()
     {
@@ -137,24 +127,22 @@ public class ByteArrayBuffer extends AbstractBuffer
         }
     }
 
-
     @Override
     public boolean equals(Object obj)
     {
         if (obj==this)
             return true;
 
-        if (obj == null || !(obj instanceof Buffer)) 
+        if (obj == null || !(obj instanceof Buffer))
             return false;
-        
+
         if (obj instanceof Buffer.CaseInsensitve)
             return equalsIgnoreCase((Buffer)obj);
-        
 
         Buffer b = (Buffer) obj;
-        
+
         // reject different lengths
-        if (b.length() != length()) 
+        if (b.length() != length())
             return false;
 
         // reject AbstractBuffer with different hash value
@@ -177,15 +165,14 @@ public class ByteArrayBuffer extends AbstractBuffer
         return true;
     }
 
-
     @Override
     public boolean equalsIgnoreCase(Buffer b)
     {
         if (b==this)
             return true;
-        
+
         // reject different lengths
-        if (b==null || b.length() != length()) 
+        if (b==null || b.length() != length())
             return false;
 
         // reject AbstractBuffer with different hash value
@@ -256,13 +243,12 @@ public class ByteArrayBuffer extends AbstractBuffer
         }
         return _hash;
     }
-    
-    
+
     public byte peek(int index)
     {
         return _bytes[index];
     }
-    
+
     public int peek(int index, byte[] b, int offset, int length)
     {
         int l = length;
@@ -272,50 +258,30 @@ public class ByteArrayBuffer extends AbstractBuffer
             if (l==0)
                 return -1;
         }
-        
-        if (l < 0) 
+
+        if (l < 0)
             return -1;
-        
+
         System.arraycopy(_bytes, index, b, offset, l);
         return l;
     }
 
     public void poke(int index, byte b)
     {
-        /* 
-        if (isReadOnly()) 
-            throw new IllegalStateException(__READONLY);
-        
-        if (index < 0) 
-            throw new IllegalArgumentException("index<0: " + index + "<0");
-        if (index > capacity())
-                throw new IllegalArgumentException("index>capacity(): " + index + ">" + capacity());
-        */
         _bytes[index] = b;
     }
-    
+
     @Override
     public int poke(int index, Buffer src)
     {
         _hash=0;
-        
-        /* 
-        if (isReadOnly()) 
-            throw new IllegalStateException(__READONLY);
-        if (index < 0) 
-            throw new IllegalArgumentException("index<0: " + index + "<0");
-        */
-        
+
         int length=src.length();
         if (index + length > capacity())
         {
             length=capacity()-index;
-            /*
-            if (length<0)
-                throw new IllegalArgumentException("index>capacity(): " + index + ">" + capacity());
-            */
         }
-        
+
         byte[] src_array = src.array();
         if (src_array != null)
             System.arraycopy(src_array, src.getIndex(), _bytes, index, length);
@@ -325,35 +291,25 @@ public class ByteArrayBuffer extends AbstractBuffer
             for (int i=0;i<length;i++)
                 _bytes[index++]=src.peek(s++);
         }
-        
+
         return length;
     }
-    
 
     @Override
     public int poke(int index, byte[] b, int offset, int length)
     {
         _hash=0;
-        /*
-        if (isReadOnly()) 
-            throw new IllegalStateException(__READONLY);
-        if (index < 0) 
-            throw new IllegalArgumentException("index<0: " + index + "<0");
-        */
-        
+
         if (index + length > capacity())
         {
             length=capacity()-index;
-            /* if (length<0)
-                throw new IllegalArgumentException("index>capacity(): " + index + ">" + capacity());
-            */
         }
-        
+
         System.arraycopy(b, offset, _bytes, index, length);
-        
+
         return length;
     }
-    
+
     /* ------------------------------------------------------------ */
     @Override
     public void writeTo(OutputStream out)
@@ -376,7 +332,7 @@ public class ByteArrayBuffer extends AbstractBuffer
         if (!isImmutable())
             clear();
     }
-    
+
     /* ------------------------------------------------------------ */
     @Override
     public int readFrom(InputStream in,int max) throws IOException
@@ -384,7 +340,7 @@ public class ByteArrayBuffer extends AbstractBuffer
         if (max<0||max>space())
             max=space();
         int p = putIndex();
-        
+
         int len=0, total=0, available=max;
         while (total<max) 
         {
@@ -413,7 +369,6 @@ public class ByteArrayBuffer extends AbstractBuffer
         return _bytes.length - _put;
     }
 
-    
     /* ------------------------------------------------------------ */
     /* ------------------------------------------------------------ */
     /* ------------------------------------------------------------ */
@@ -423,7 +378,7 @@ public class ByteArrayBuffer extends AbstractBuffer
         {
             super(s);
         }
-        
+
         public CaseInsensitive(byte[] b, int o, int l, int rw)
         {
             super(b,o,l,rw);
@@ -434,6 +389,5 @@ public class ByteArrayBuffer extends AbstractBuffer
         {
             return obj instanceof Buffer && equalsIgnoreCase((Buffer)obj);
         }
-        
     }
 }

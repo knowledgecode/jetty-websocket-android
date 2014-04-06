@@ -44,11 +44,6 @@ public interface Connection
     Connection handle() throws IOException;
 
     /**
-     * @return the timestamp at which the connection was created
-     */
-    long getTimeStamp();
-
-    /**
      * @return whether this connection is idle, that is not parsing and not generating
      * @see #onIdleExpired(long)
      */

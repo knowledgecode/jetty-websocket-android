@@ -28,20 +28,20 @@ public interface AsyncEndPoint extends ConnectedEndPoint
      * 
      */
     public void dispatch();
-    
+
     /* ------------------------------------------------------------ */
     /**
      * Dispatch the endpoint. If it is already dispatched, schedule a redispatch
      * 
      */
     public void asyncDispatch();
-    
+
     /* ------------------------------------------------------------ */
     /** Schedule a write dispatch.
      * Set the endpoint to not be writable and schedule a dispatch when
      * it becomes writable.
      */
-    public void scheduleWrite();  
+    public void scheduleWrite();
 
     /* ------------------------------------------------------------ */
     /** Callback when idle.
@@ -61,7 +61,6 @@ public interface AsyncEndPoint extends ConnectedEndPoint
      */
     public boolean isCheckForIdle();
 
-    
     /* ------------------------------------------------------------ */
     public boolean isWritable();
 
@@ -70,7 +69,7 @@ public interface AsyncEndPoint extends ConnectedEndPoint
      * @return True if IO has been successfully performed since the last call to {@link #hasProgressed()}
      */
     public boolean hasProgressed();
-    
+
     /* ------------------------------------------------------------ */
     /**
      */

@@ -86,28 +86,14 @@ public class ThreadLocalBuffers extends AbstractBuffers
     }
 
     /* ------------------------------------------------------------ */
-    public Buffer getBuffer(int size)
-    {
-        ThreadBuffers buffers = _buffers.get();
-        if (buffers._other!=null && buffers._other.capacity()==size)
-        {
-            Buffer b=buffers._other;
-            buffers._other=null;
-            return b;
-        }
-
-        return newBuffer(size);
-    }
-
-    /* ------------------------------------------------------------ */
     public void returnBuffer(Buffer buffer)
     {
         buffer.clear();
         if (buffer.isVolatile() || buffer.isImmutable())
             return;
-        
+
         ThreadBuffers buffers = _buffers.get();
-        
+
         if (buffers._header==null && isHeader(buffer))
             buffers._header=buffer;
         else if (buffers._buffer==null && isBuffer(buffer))
@@ -116,14 +102,13 @@ public class ThreadLocalBuffers extends AbstractBuffers
             buffers._other=buffer;
     }
 
-
     /* ------------------------------------------------------------ */
     @Override
     public String toString()
     {
         return "{{"+getHeaderSize()+","+getBufferSize()+"}}";
     }
-    
+
     /* ------------------------------------------------------------ */
     /* ------------------------------------------------------------ */
     protected static class ThreadBuffers

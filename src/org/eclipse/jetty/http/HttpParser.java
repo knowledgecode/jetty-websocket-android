@@ -28,7 +28,6 @@ import org.eclipse.jetty.io.ByteArrayBuffer;
 import org.eclipse.jetty.io.EndPoint;
 import org.eclipse.jetty.io.EofException;
 import org.eclipse.jetty.io.View;
-import org.eclipse.jetty.io.bio.StreamEndPoint;
 import org.eclipse.jetty.util.StringUtil;
 import org.eclipse.jetty.util.log.Log;
 import org.eclipse.jetty.util.log.Logger;
@@ -1218,7 +1217,7 @@ public class HttpParser implements Parser
     /* (non-Javadoc)
      * @see java.io.InputStream#available()
      */
-    public int available() throws IOException
+/*    public int available() throws IOException
     {
         if (_contentView!=null && _contentView.length()>0)
             return _contentView.length();
@@ -1234,7 +1233,7 @@ public class HttpParser implements Parser
         parseNext();
         return _contentView==null?0:_contentView.length();
     }
-
+*/
     /* ------------------------------------------------------------ */
     /* ------------------------------------------------------------ */
     /* ------------------------------------------------------------ */

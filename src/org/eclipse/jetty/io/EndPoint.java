@@ -20,7 +20,6 @@ package org.eclipse.jetty.io;
 
 import java.io.IOException;
 
-
 /**
  *
  * A transport EndPoint
@@ -56,7 +55,6 @@ public interface EndPoint
      */
     int fill(Buffer buffer) throws IOException;
 
-
     /**
      * Flush the buffer from the current getIndex to it's putIndex using whatever byte
      * sink is backing the buffer. The getIndex is updated with the number of bytes flushed.
@@ -83,7 +81,6 @@ public interface EndPoint
      * @return the total number of bytes written.
      */
     int flush(Buffer header, Buffer buffer, Buffer trailer) throws IOException;
-
 
     /* ------------------------------------------------------------ */
     /**
@@ -169,7 +166,4 @@ public interface EndPoint
      * @throws IOException if the timeout cannot be set.
      */
     public void setMaxIdleTime(int timeMs) throws IOException;
-
-
-
 }

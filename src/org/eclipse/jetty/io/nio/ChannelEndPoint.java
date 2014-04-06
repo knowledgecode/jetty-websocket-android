@@ -52,23 +52,6 @@ public class ChannelEndPoint implements EndPoint
     private volatile boolean _ishut;
     private volatile boolean _oshut;
 
-    public ChannelEndPoint(ByteChannel channel) throws IOException
-    {
-        super();
-        this._channel = channel;
-        _socket=(channel instanceof SocketChannel)?((SocketChannel)channel).socket():null;
-        if (_socket!=null)
-        {
-            _local=(InetSocketAddress)_socket.getLocalSocketAddress();
-            _remote=(InetSocketAddress)_socket.getRemoteSocketAddress();
-            _maxIdleTime=_socket.getSoTimeout();
-        }
-        else
-        {
-            _local=_remote=null;
-        }
-    }
-
     protected ChannelEndPoint(ByteChannel channel, int maxIdleTime) throws IOException
     {
         this._channel = channel;
@@ -397,7 +380,6 @@ public class ChannelEndPoint implements EndPoint
     {
         return _channel;
     }
-
 
     /* ------------------------------------------------------------ */
     /*

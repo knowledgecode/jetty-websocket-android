@@ -277,25 +277,6 @@ public class IO
     }
 
     /* ------------------------------------------------------------ */
-    /**
-     * closes an output stream, and logs exceptions
-     *
-     * @param os the output stream to close
-     */
-    public static void close(OutputStream os)
-    {
-        try
-        {
-            if (os != null)
-                os.close();
-        }
-        catch (IOException e)
-        {
-            LOG.ignore(e);
-        }
-    }
-
-    /* ------------------------------------------------------------ */
     /** 
      * @return An outputstream to nowhere
      */

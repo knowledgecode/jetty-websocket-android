@@ -19,7 +19,6 @@
 package org.eclipse.jetty.util.security;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 import org.eclipse.jetty.util.log.Log;
 import org.eclipse.jetty.util.log.Logger;
@@ -52,11 +51,9 @@ import org.eclipse.jetty.util.log.Logger;
  * 
  * 
  */
-public class Password extends Credential
+public class Password
 {
     private static final Logger LOG = Log.getLogger(Password.class);
-
-    private static final long serialVersionUID = 5062906681431569445L;
 
     public static final String __OBFUSCATE = "OBF:";
 
@@ -85,29 +82,6 @@ public class Password extends Credential
     }
 
     /* ------------------------------------------------------------ */
-    public String toStarString()
-    {
-        return "*****************************************************".substring(0, _pw.length());
-    }
-
-    /* ------------------------------------------------------------ */
-    @Override
-    public boolean check(Object credentials)
-    {
-        if (this == credentials) return true;
-
-        if (credentials instanceof Password) return credentials.equals(_pw);
-
-        if (credentials instanceof String) return credentials.equals(_pw);
-
-        if (credentials instanceof char[]) return Arrays.equals(_pw.toCharArray(), (char[]) credentials);
-
-        if (credentials instanceof Credential) return ((Credential) credentials).check(_pw);
-
-        return false;
-    }
-
-    /* ------------------------------------------------------------ */
     @Override
     public boolean equals(Object o)
     {
@@ -128,55 +102,6 @@ public class Password extends Credential
             return o.equals(_pw);
 
         return false;
-    }
-
-    /* ------------------------------------------------------------ */
-    @Override
-    public int hashCode()
-    {
-        return null == _pw ? super.hashCode() : _pw.hashCode();
-    }
-
-    /* ------------------------------------------------------------ */
-    public static String obfuscate(String s)
-    {
-        StringBuilder buf = new StringBuilder();
-        byte[] b = s.getBytes();
-
-        buf.append(__OBFUSCATE);
-        for (int i = 0; i < b.length; i++)
-        {
-            byte b1 = b[i];
-            byte b2 = b[s.length() - (i + 1)];
-            int i1 = 127 + b1 + b2;
-            int i2 = 127 + b1 - b2;
-            int i0 = i1 * 256 + i2;
-            String x = Integer.toString(i0, 36);
-
-            switch (x.length())
-            {
-                case 1:
-                    buf.append('0');
-                    buf.append('0');
-                    buf.append('0');
-                    buf.append(x);
-                    break;
-                case 2:
-                    buf.append('0');
-                    buf.append('0');
-                    buf.append(x);
-                    break;
-                case 3:
-                    buf.append('0');
-                    buf.append(x);
-                    break;
-                default:
-                    buf.append(x);
-                    break;
-            }
-        }
-        return buf.toString();
-
     }
 
     /* ------------------------------------------------------------ */
@@ -233,25 +158,5 @@ public class Password extends Credential
             if (passwd == null || passwd.length() == 0) passwd = promptDft;
         }
         return new Password(passwd);
-    }
-
-    /* ------------------------------------------------------------ */
-    /**
-     * @param arg
-     */
-    public static void main(String[] arg)
-    {
-        if (arg.length != 1 && arg.length != 2)
-        {
-            System.err.println("Usage - java org.eclipse.jetty.security.Password [<user>] <password>");
-            System.err.println("If the password is ?, the user will be prompted for the password");
-            System.exit(1);
-        }
-        String p = arg[arg.length == 1 ? 0 : 1];
-        Password pw = new Password(p);
-        System.err.println(pw.toString());
-        System.err.println(obfuscate(pw.toString()));
-        System.err.println(Credential.MD5.digest(p));
-        if (arg.length == 2) System.err.println(Credential.Crypt.crypt(arg[0], pw.toString()));
     }
 }
